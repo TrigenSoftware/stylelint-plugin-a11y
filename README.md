@@ -18,7 +18,7 @@
 [deps]: https://img.shields.io/librariesio/release/npm/stylelint-plugin-a11y
 [deps-url]: https://libraries.io/npm/stylelint-plugin-a11y/tree
 
-[build]: https://img.shields.io/github/actions/workflow/status/TrigenSoftware/stylelint-plugin-a11y/tests.yml?branch=main
+[build]: https://img.shields.io/github/actions/workflow/status/TrigenSoftware/stylelint-plugin-a11y/tests.yml?branch=master
 [build-url]: https://github.com/TrigenSoftware/stylelint-plugin-a11y/actions
 
 Plugin for stylelint with a11y rules.
