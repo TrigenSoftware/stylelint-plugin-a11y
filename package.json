@@ -1,7 +1,7 @@
 {
   "name": "stylelint-plugin-a11y",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Plugin for stylelint with a11y rules.",
   "author": "Stanislav <botev.st@gmail.com>",
   "license": "MIT",
