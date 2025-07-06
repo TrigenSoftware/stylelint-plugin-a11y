@@ -194,6 +194,7 @@ export default function mediaPrefersReducedMotion(actual, _, context) {
       if (!isAccepted) {
         report({
           index: node.lastEach,
+          endIndex: node.lastEach,
           message: messages.expected(selector),
           node,
           ruleName,
