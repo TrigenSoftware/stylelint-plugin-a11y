@@ -1,115 +1,134 @@
-import { utils } from 'stylelint';
-import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule';
-import isStandardSyntaxSelector from 'stylelint/lib/utils/isStandardSyntaxSelector';
-import isStandardSyntaxAtRule from 'stylelint/lib/utils/isStandardSyntaxAtRule';
-import isCustomSelector from 'stylelint/lib/utils/isCustomSelector';
+import isCustomSelector from 'stylelint/lib/utils/isCustomSelector.mjs'
+import isStandardSyntaxAtRule from 'stylelint/lib/utils/isStandardSyntaxAtRule.mjs'
+import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule.mjs'
+import isStandardSyntaxSelector from 'stylelint/lib/utils/isStandardSyntaxSelector.mjs'
+import stylelint from 'stylelint'
 
-export const ruleName = 'a11y/media-prefers-color-scheme';
+const { utils: { report, ruleMessages, validateOptions } } = stylelint
 
-export const messages = utils.ruleMessages(ruleName, {
-  expected: selector => `Expected ${selector} is used with @media (prefers-color-scheme)`,
-});
-const targetProperties = ['background-color', 'color'];
+export const ruleName = 'a11y/media-prefers-color-scheme'
+
+export const messages = ruleMessages(ruleName, {
+  expected: selector => `Expected ${selector} is used with @media (prefers-color-scheme)`
+})
+
+const targetProperties = ['background-color', 'color']
 
 function check(selector, node) {
-  const declarations = node.nodes;
-  const params = node.parent.params;
-  const parentNodes = node.parent.nodes;
+  const declarations = node.nodes
+  const params = node.parent.params
+  const parentNodes = node.parent.nodes
 
-  if (!declarations) return true;
+  if (!declarations) {
+    return true
+  }
 
   if (!isStandardSyntaxSelector(selector)) {
-    return true;
+    return true
   }
 
   if (isCustomSelector(selector)) {
-    return true;
+    return true
   }
 
-  let currentSelector = null;
+  let currentSelector = null
+  const declarationsIsMatched = declarations.some((declaration) => {
+    const noMatchedParams = !params || params.indexOf('prefers-color-scheme') === -1
+    const index = targetProperties.indexOf(declaration.prop)
 
-  const declarationsIsMatched = declarations.some(declaration => {
-    const noMatchedParams = !params || params.indexOf('prefers-color-scheme') === -1;
-    const index = targetProperties.indexOf(declaration.prop);
-    currentSelector = targetProperties[index];
+    currentSelector = targetProperties[index]
 
-    return index >= 0 && noMatchedParams;
-  });
+    return index >= 0 && noMatchedParams
+  })
 
-  if (!declarationsIsMatched) return true;
+  if (!declarationsIsMatched) {
+    return true
+  }
 
   if (declarationsIsMatched) {
-    const parentMatchedNode = parentNodes.some(parentNode => {
-      if (!parentNode || !parentNode.nodes) return;
-      return parentNode.nodes.some(childrenNode => {
-        const childrenNodes = childrenNode.nodes;
+    const parentMatchedNode = parentNodes.some((parentNode) => {
+      if (!parentNode || !parentNode.nodes) {
+        return false
+      }
+
+      return parentNode.nodes.some((childrenNode) => {
+        const childrenNodes = childrenNode.nodes
 
         if (
-          !parentNode.params ||
-          !Array.isArray(childrenNodes) ||
-          selector !== childrenNode.selector
-        )
-          return false;
+          !parentNode.params
+          || !Array.isArray(childrenNodes)
+          || selector !== childrenNode.selector
+        ) {
+          return false
+        }
 
-        const matchedChildrenNodes = childrenNodes.some(declaration => {
-          const index = targetProperties.indexOf(declaration.prop);
-          if (currentSelector !== targetProperties[index]) return false;
+        const matchedChildrenNodes = childrenNodes.some((declaration) => {
+          const index = targetProperties.indexOf(declaration.prop)
 
-          return index >= 0 && parentNode.params.indexOf('prefers-color-scheme') >= 0;
-        });
+          if (currentSelector !== targetProperties[index]) {
+            return false
+          }
 
-        return matchedChildrenNodes;
-      });
-    });
+          return index >= 0 && parentNode.params.indexOf('prefers-color-scheme') >= 0
+        })
 
-    if (!parentMatchedNode) return false;
+        return matchedChildrenNodes
+      })
+    })
 
-    return true;
-  }
-
-  return true;
-}
-
-export default function(actual) {
-  return (root, result) => {
-    const validOptions = utils.validateOptions(result, ruleName, { actual });
-
-    if (!validOptions || !actual) {
-      return;
+    if (!parentMatchedNode) {
+      return false
     }
 
-    root.walk(node => {
-      let selector = null;
+    return true
+  }
+
+  return true
+}
+
+export default function mediaPrefersColorScheme(actual) {
+  return (root, result) => {
+    const validOptions = validateOptions(result, ruleName, {
+      actual
+    })
+
+    if (!validOptions || !actual) {
+      return
+    }
+
+    root.walk((node) => {
+      let selector = null
 
       if (node.type === 'rule') {
         if (!isStandardSyntaxRule(node)) {
-          return;
+          return
         }
 
-        selector = node.selector;
+        selector = node.selector
       } else if (node.type === 'atrule' && node.name === 'page' && node.params) {
         if (!isStandardSyntaxAtRule(node)) {
-          return;
+          return
         }
 
-        selector = node.params;
+        selector = node.params
       }
 
       if (!selector) {
-        return;
+        return
       }
 
-      const isAccepted = check(selector, node);
+      const isAccepted = check(selector, node)
 
       if (!isAccepted) {
-        utils.report({
+        report({
           index: node.lastEach,
+          endIndex: node.lastEach,
           message: messages.expected(selector),
           node,
           ruleName,
-          result,
-        });
+          result
+        })
       }
-    });
-  };
+    })
+  }
 }

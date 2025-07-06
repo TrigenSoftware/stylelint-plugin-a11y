@@ -12,7 +12,7 @@ Disallow obsolete attribute using.
 
 ### true
 
-The following pattern are considered violations:
+The following pattern is considered a violation:
 
 ```css
 body[link] {
@@ -21,13 +21,15 @@ body[link] {
 ```
 
 ```css
-a, img[datasrc] {
+a,
+img[datasrc] {
   color: pink;
 }
 ```
 
 ```css
-img[align], a[name] {
+img[align],
+a[name] {
   color: pink;
 }
 ```

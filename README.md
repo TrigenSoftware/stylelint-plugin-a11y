@@ -1,17 +1,42 @@
-# stylelint-a11y
+# stylelint-plugin-a11y
 
-[![NPM version](http://img.shields.io/npm/v/stylelint-a11y.svg)](https://www.npmjs.org/package/stylelint-a11y)
-[![npm](https://img.shields.io/npm/dt/stylelint-a11y.svg)](http://www.npmtrends.com/stylelint-a11y)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
-[![Build Status](https://travis-ci.org/YozhikM/stylelint-a11y.svg?branch=master)](https://travis-ci.org/YozhikM/stylelint-a11y)
+[![ESM-only package][package]][package-url]
+[![NPM version][npm]][npm-url]
+[![Node version][node]][node-url]
+[![Dependencies status][deps]][deps-url]
+[![Build status][build]][build-url]
 
-## Installation and usage
+[package]: https://img.shields.io/badge/package-ESM--only-ffe536.svg
+[package-url]: https://nodejs.org/api/esm.html
+
+[npm]: https://img.shields.io/npm/v/stylelint-plugin-a11y.svg
+[npm-url]: https://www.npmjs.com/package/stylelint-plugin-a11y
+
+[node]: https://img.shields.io/node/v/stylelint-plugin-a11y.svg
+[node-url]: https://nodejs.org
+
+[deps]: https://img.shields.io/librariesio/release/npm/stylelint-plugin-a11y
+[deps-url]: https://libraries.io/npm/stylelint-plugin-a11y/tree
+
+[build]: https://img.shields.io/github/actions/workflow/status/TrigenSoftware/stylelint-plugin-a11y/tests.yml?branch=main
+[build-url]: https://github.com/TrigenSoftware/stylelint-plugin-a11y/actions
+
+Plugin for stylelint with a11y rules.
+
+## Install
 
 ```bash
-yarn add --dev stylelint stylelint-a11y
+# pnpm
+pnpm add -D stylelint-plugin-a11y
+# yarn
+yarn add -D stylelint-plugin-a11y
+# npm
+npm i -D stylelint-plugin-a11y
 ```
 
-Create the `.stylelintrc.json` config file (or open the existing one), add `stylelint-a11y` to the plugins array and the rules you need to the rules list. All rules from stylelint-a11y need to be namespaced with `a11y`.
+## Usage
+
+Create the `.stylelintrc.json` config file (or open the existing one), add `stylelint-plugin-a11y` to the plugins array and the rules you need to the rules list. All rules from stylelint-plugin-a11y need to be namespaced with `a11y`.
 
 Please refer to [stylelint docs](https://stylelint.io/user-guide/) for the detailed info on using this linter.
 
@@ -40,14 +65,14 @@ Please refer to [stylelint docs](https://stylelint.io/user-guide/) for the detai
 Add recommended configuration by simply adding the following to `extends` in your stylelint configuration:
 
 ```
-stylelint-a11y/recommended
+stylelint-plugin-a11y/recommended
 ```
 
 This shareable config contains the following:
 
 ```json
 {
-  "plugins": ["stylelint-a11y"],
+  "plugins": ["stylelint-plugin-a11y"],
   "rules": {
     "a11y/media-prefers-reduced-motion": true,
     "a11y/no-outline-none": true,
@@ -56,9 +81,9 @@ This shareable config contains the following:
 }
 ```
 
-Since it adds stylelint-a11y to `plugins`, you don't have to do this yourself when extending this config.
+Since it adds stylelint-plugin-a11y to `plugins`, you don't have to do this yourself when extending this config.
 
-## Help out
+## Contributing
 
 There work on the plugin's rules is still in progress, so if you feel like it, you're welcome to help out in any of these (the plugin follows stylelint guidelines so most part of this is based on its docs):
 
@@ -71,6 +96,4 @@ There work on the plugin's rules is still in progress, so if you feel like it, y
 - Contribute to [stylelint](https://github.com/stylelint/stylelint)
 - Spread the word.
 
-We communicate via [issues](https://github.com/YozhikM/stylelint-a11y/issues) and [pull requests](https://github.com/YozhikM/stylelint-a11y/pulls).
-
-There is also [stackoverflow](https://stackoverflow.com/questions/tagged/stylelint), which would be the preferred QA forum.
+We communicate via [issues](https://github.com/TrigenSoftware/stylelint-plugin-a11y/issues) and [pull requests](https://github.com/TrigenSoftware/stylelint-plugin-a11y/pulls).

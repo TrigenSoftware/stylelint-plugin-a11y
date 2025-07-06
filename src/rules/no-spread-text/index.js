@@ -1,11 +1,13 @@
-import { utils } from 'stylelint';
-import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule';
+import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule.mjs'
+import stylelint from 'stylelint'
 
-export const ruleName = 'a11y/no-spread-text';
+const { utils: { report, ruleMessages, validateOptions } } = stylelint
 
-export const messages = utils.ruleMessages(ruleName, {
-  expected: selector => `Unexpected max-width in ${selector}`,
-});
+export const ruleName = 'a11y/no-spread-text'
+
+export const messages = ruleMessages(ruleName, {
+  expected: selector => `Unexpected max-width in ${selector}`
+})
 
 const textStyles = [
   'text-decoration',
@@ -18,55 +20,54 @@ const textStyles = [
   'word-spacing',
   'text-shadow',
   'text-overflow',
-  'color',
-];
+  'color'
+]
+const nodesProbablyForText = nodes => nodes
+  .map(node => node.prop)
+  .filter(Boolean)
+  .map(prop => prop.toLowerCase())
+  .some(prop => textStyles.includes(prop))
 
-const nodesProbablyForText = nodes =>
-  nodes
-    .map(node => node.prop)
-    .filter(Boolean)
-    .map(prop => prop.toLowerCase())
-    .some(prop => textStyles.includes(prop));
-
-export default function(actual) {
+export default function noSpreadText(actual) {
   return (root, result) => {
-    const validOptions = utils.validateOptions(result, ruleName, { actual });
+    const validOptions = validateOptions(result, ruleName, {
+      actual
+    })
 
     if (!validOptions || !actual) {
-      return;
+      return
     }
 
-    root.walkRules(rule => {
-      let selector = null;
+    root.walkRules((rule) => {
+      let selector = null
+
       if (!isStandardSyntaxRule(rule)) {
-        return;
+        return
       }
-      selector = rule.selector;
+
+      selector = rule.selector
 
       if (!selector) {
-        return;
+        return
       }
 
       const isRejected =
-        nodesProbablyForText(rule.nodes) &&
-        rule.nodes.some(o => {
-          return (
-            o.type === 'decl' &&
-            o.prop.toLowerCase() === 'max-width' &&
-            o.value.toLowerCase().endsWith('ch') &&
-            (parseFloat(o.value) < 45 || parseFloat(o.value) > 80)
-          );
-        });
+        nodesProbablyForText(rule.nodes)
+        && rule.nodes.some(o => o.type === 'decl'
+            && o.prop.toLowerCase() === 'max-width'
+            && o.value.toLowerCase().endsWith('ch')
+            && (parseFloat(o.value) < 45 || parseFloat(o.value) > 80))
 
       if (isRejected) {
-        utils.report({
+        report({
           index: rule.lastEach,
+          endIndex: rule.lastEach,
           message: messages.expected(selector),
           node: rule,
           ruleName,
-          result,
-        });
+          result
+        })
       }
-    });
-  };
+    })
+  }
 }

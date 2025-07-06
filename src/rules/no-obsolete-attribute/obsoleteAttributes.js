@@ -200,5 +200,5 @@ export const obsoleteAttributes = new Set([
   'iframe[scrolling]',
   'img[border]',
   'object[border]',
-  'input[inputmode]',
-]);
+  'input[inputmode]'
+])

@@ -11,7 +11,7 @@ Disallow font sizes less than 15px (or 11.25pt).
 
 ### true
 
-The following pattern are considered violations:
+The following pattern is considered a violation:
 
 ```css
 .foo {
@@ -30,5 +30,23 @@ The following patterns are _not_ considered violations:
 ```css
 .foo {
   font-size: 1em;
+}
+```
+
+## Optional secondary options
+
+### `thresholdInPixels: number`
+
+Given:
+
+```
+16
+```
+
+The following pattern is considered a violation:
+
+```css
+.foo {
+  font-size: 15px;
 }
 ```

@@ -1,72 +1,69 @@
-import { utils } from 'stylelint';
-import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule';
+import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule.mjs'
+import stylelint from 'stylelint'
 
-export const ruleName = 'a11y/content-property-no-static-value';
+const { utils: { report, ruleMessages, validateOptions } } = stylelint
 
-export const messages = utils.ruleMessages(ruleName, {
-  expected: selector => `Unexpected using "content" property in ${selector}`,
-});
+export const ruleName = 'a11y/content-property-no-static-value'
 
-const isContentPropertyUsedCorrectly = selectors =>
-  selectors.every(selector => {
-    return /:before|:after/.test(selector);
-  });
+export const messages = ruleMessages(ruleName, {
+  expected: selector => `Unexpected using "content" property in ${selector}`
+})
 
-const checkNodesForContentProperty = node =>
-  node.nodes.filter(node => node.prop).some(node => node.prop.toLowerCase() === 'content');
+const isContentPropertyUsedCorrectly = selectors => selectors.every(selector => /:before|:after/.test(selector))
+const checkNodesForContentProperty = node => node.nodes.filter(n => n.prop).some(n => n.prop.toLowerCase() === 'content')
 
 function check(node) {
   if (node.type !== 'rule' || !checkNodesForContentProperty(node) || !node.first) {
-    return true;
+    return true
   }
 
-  return node.nodes.some(o => {
-    return (
-      o.type === 'decl' &&
-      o.prop.toLowerCase() === 'content' &&
-      isContentPropertyUsedCorrectly(o.parent.selectors) &&
-      (o.value.toLowerCase() === "''" ||
-        o.value.toLowerCase() === '""' ||
-        o.value.toLowerCase() === 'attr(aria-label)')
-    );
-  });
+  return node.nodes.some(o => o.type === 'decl'
+      && o.prop.toLowerCase() === 'content'
+      && isContentPropertyUsedCorrectly(o.parent.selectors)
+      && (o.value.toLowerCase() === "''"
+        || o.value.toLowerCase() === '""'
+        || o.value.toLowerCase() === 'attr(aria-label)'))
 }
 
-export default function(actual) {
+export default function contentPropertyNoStaticValue(actual) {
   return (root, result) => {
-    const validOptions = utils.validateOptions(result, ruleName, { actual });
+    const validOptions = validateOptions(result, ruleName, {
+      actual
+    })
 
     if (!validOptions || !actual) {
-      return;
+      return
     }
 
-    root.walk(node => {
-      let selector = null;
+    root.walk((node) => {
+      let selector = null
 
       if (node.type === 'rule') {
         if (!isStandardSyntaxRule(node)) {
-          return;
+          return
         }
-        selector = node.selector;
+
+        selector = node.selector
       } else if (node.type === 'atrule' && node.name.toLowerCase() === 'page' && node.params) {
-        selector = node.params;
+        selector = node.params
       }
 
       if (!selector) {
-        return;
+        return
       }
 
-      const isAccepted = check(node);
+      const isAccepted = check(node)
 
       if (!isAccepted) {
-        utils.report({
+        report({
           index: node.lastEach,
+          endIndex: node.lastEach,
           message: messages.expected(selector),
           node,
           ruleName,
-          result,
-        });
+          result
+        })
       }
-    });
-  };
+    })
+  }
 }

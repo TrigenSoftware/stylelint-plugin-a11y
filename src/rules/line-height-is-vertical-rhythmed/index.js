@@ -1,61 +1,66 @@
-import { utils } from 'stylelint';
-import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule';
+import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule.mjs'
+import stylelint from 'stylelint'
 
-export const ruleName = 'a11y/line-height-is-vertical-rhythmed';
+const { utils: { report, ruleMessages, validateOptions } } = stylelint
 
-export const messages = utils.ruleMessages(ruleName, {
-  expected: selector => `Expected a vertical rhythmed line-height in ${selector}`,
-});
+export const ruleName = 'a11y/line-height-is-vertical-rhythmed'
+
+export const messages = ruleMessages(ruleName, {
+  expected: selector => `Expected a vertical rhythmed line-height in ${selector}`
+})
 
 function check(node) {
   if (node.type !== 'rule') {
-    return true;
+    return true
   }
 
-  const checkInPx = o => o.value.toLowerCase().endsWith('px') && parseInt(o.value) % 24 !== 0;
-  const checkInRel = o => !isNaN(o.value) && parseFloat(o.value) < 1.5;
+  const checkInPx = o => o.value.toLowerCase().endsWith('px') && parseInt(o.value) % 24 !== 0
+  const checkInRel = o => !isNaN(o.value) && parseFloat(o.value) < 1.5
 
   return !node.nodes.some(
-    o =>
-      o.type === 'decl' && o.prop.toLowerCase() === 'line-height' && (checkInPx(o) || checkInRel(o))
-  );
+    o => o.type === 'decl' && o.prop.toLowerCase() === 'line-height' && (checkInPx(o) || checkInRel(o))
+  )
 }
 
-export default function(actual) {
+export default function lineHeightIsVerticalRhythmed(actual) {
   return (root, result) => {
-    const validOptions = utils.validateOptions(result, ruleName, { actual });
+    const validOptions = validateOptions(result, ruleName, {
+      actual
+    })
 
     if (!validOptions || !actual) {
-      return;
+      return
     }
 
-    root.walk(node => {
-      let selector = null;
+    root.walk((node) => {
+      let selector = null
 
       if (node.type === 'rule') {
         if (!isStandardSyntaxRule(node)) {
-          return;
+          return
         }
-        selector = node.selector;
+
+        selector = node.selector
       } else if (node.type === 'atrule' && node.name.toLowerCase() === 'page' && node.params) {
-        selector = node.params;
+        selector = node.params
       }
 
       if (!selector) {
-        return;
+        return
       }
 
-      const isAccepted = check(node);
+      const isAccepted = check(node)
 
       if (!isAccepted) {
-        utils.report({
+        report({
           index: node.lastEach,
+          endIndex: node.lastEach,
           message: messages.expected(selector),
           node,
           ruleName,
-          result,
-        });
+          result
+        })
       }
-    });
-  };
+    })
+  }
 }

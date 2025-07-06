@@ -1,8 +1,10 @@
-import { createPlugin } from 'stylelint';
-import rules from './rules';
+import stylelint from 'stylelint'
+import rules from './rules/index.js'
 
-const rulesPlugins = Object.keys(rules).map(ruleName => {
-  return createPlugin(`a11y/${ruleName}`, rules[ruleName]);
-});
+const { createPlugin } = stylelint
+const rulesPlugins = Object.keys(rules).map(
+  ruleName => createPlugin(`a11y/${ruleName}`, rules[ruleName])
+)
 
-export default rulesPlugins;
+/** @type {import('stylelint').Plugin[]} */
+export default rulesPlugins
