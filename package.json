@@ -29,7 +29,7 @@
     "directory": "package"
   },
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
     "clear:package": "del ./package",
