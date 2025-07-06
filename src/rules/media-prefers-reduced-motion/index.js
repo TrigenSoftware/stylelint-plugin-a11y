@@ -162,7 +162,7 @@ export default function mediaPrefersReducedMotion(actual, _, context) {
       const isAccepted = check(selector, node)
 
       if (context.fix && !isAccepted) {
-        const media = parse('@media screen and (prefers-reduced-motion: reduce) {}')
+        const media = parse('\n@media screen and (prefers-reduced-motion: reduce) {}')
 
         media.nodes.forEach((o) => {
           o.raws.after = '\n'
@@ -176,17 +176,24 @@ export default function mediaPrefersReducedMotion(actual, _, context) {
           after: '\n',
           semicolon: true
         }
-        cloneRule.nodes.forEach((o) => {
-          if (o.prop === 'animation-name') {
-            o.prop = 'animation'
-          }
 
-          if (targetProperties.indexOf(o.prop) >= 0) {
-            o.value = 'none'
+        cloneRule.removeAll()
+
+        node.nodes.forEach((declaration) => {
+          if (targetProperties.indexOf(declaration.prop) >= 0) {
+            const newDeclaration = declaration.clone()
+
+            if (newDeclaration.prop === 'animation-name') {
+              newDeclaration.prop = 'animation'
+            }
+
+            newDeclaration.value = 'none'
+            cloneRule.append(newDeclaration)
           }
         })
+
         media.first.append(cloneRule)
-        node.before(media)
+        node.after(media)
 
         return
       }
