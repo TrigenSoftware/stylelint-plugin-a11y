@@ -25,8 +25,8 @@ importers:
         specifier: 8.0.0-alpha.34
         version: 8.0.0-alpha.34(eslint@9.30.1(jiti@2.4.2))
       '@trigen/scripts':
-        specifier: 8.0.0-alpha.33
-        version: 8.0.0-alpha.33
+        specifier: 8.0.0
+        version: 8.0.0
       clean-publish:
         specifier: ^5.2.2
         version: 5.2.2
@@ -253,6 +253,14 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
+  '@simple-libs/child-process-utils@1.0.1':
+    resolution: {integrity: sha512-3nWd8irxvDI6v856wpPCHZ+08iQR0oHTZfzAZmnbsLzf+Sf1odraP6uKOHDZToXq3RPRV/LbqGVlSCogm9cJjg==}
+    engines: {node: '>=18'}
+
+  '@simple-libs/stream-utils@1.1.0':
+    resolution: {integrity: sha512-6rsHTjodIn/t90lv5snQjRPVtOosM7Vp0AKdrObymq45ojlgVwnpAqdc+0OBBrpEiy31zZ6/TKeIVqV1HwvnuQ==}
+    engines: {node: '>=18'}
+
   '@sindresorhus/merge-streams@2.3.0':
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
     engines: {node: '>=18'}
@@ -267,8 +275,8 @@ packages:
       '@testing-library/dom':
         optional: true
 
-  '@trigen/scripts@8.0.0-alpha.33':
-    resolution: {integrity: sha512-CNeDTiiM7Kxkb9+U5dFWKA8QxVhxVY9t2DVYslux2fpp3dImXPG7gU/OYFgJwjKXzj6TZnLQ774NWl1YTOIY/Q==}
+  '@trigen/scripts@8.0.0':
+    resolution: {integrity: sha512-GsZlxLB5pqEx028TZtiKjfyh/LLA4oGHArp9sQS0oYBPgOs6m13fTGyRcmL7MFzcIXlWR6V7WfnRdV79mrq/RA==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -283,6 +291,9 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/node@22.16.1':
+    resolution: {integrity: sha512-oaNE4MzsA6uO7HcsjUvqzz19lYIRsV6I1Dc6iOvgwYYDiOeF7/9b2E/PE0UW2ccwpgWPVUedjltYXQXVKFd4EA==}
 
   '@types/node@24.0.10':
     resolution: {integrity: sha512-ENHwaH+JIRTDIEEbDK6QSQntAYGtbvdDXnMXnZaZ6k13Du1dPMmprkEHIL7ok2Wl2aZevetwTAb5S+7yIF+enA==}
@@ -1568,8 +1579,8 @@ packages:
     resolution: {integrity: sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  p-limit@5.0.0:
-    resolution: {integrity: sha512-/Eaoq+QyLSiXQ4lyYV23f14mZRQcXnxfHrN0vCai+ak9G0pp9iEQukIIZq5NccEvwRB8PUnZT0KsOoDCINS1qQ==}
+  p-limit@6.2.0:
+    resolution: {integrity: sha512-kuUqqHNUqoIWp/c467RI4X6mmyuojY5jGutNU0wVTmEOOfcuwLqyMVoAi9MKi2Ak+5i9+nhmrK4ufZE8069kHA==}
     engines: {node: '>=18'}
 
   p-locate@5.0.0:
@@ -1988,6 +1999,9 @@ packages:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
 
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
   undici-types@7.8.0:
     resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
 
@@ -2312,6 +2326,15 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
+  '@simple-libs/child-process-utils@1.0.1':
+    dependencies:
+      '@simple-libs/stream-utils': 1.1.0
+      '@types/node': 22.16.1
+
+  '@simple-libs/stream-utils@1.1.0':
+    dependencies:
+      '@types/node': 22.16.1
+
   '@sindresorhus/merge-streams@2.3.0': {}
 
   '@trigen/eslint-config@8.0.0-alpha.34(eslint@9.30.1(jiti@2.4.2))':
@@ -2336,11 +2359,13 @@ snapshots:
       - supports-color
       - typescript
 
-  '@trigen/scripts@8.0.0-alpha.33':
+  '@trigen/scripts@8.0.0':
     dependencies:
+      '@simple-libs/child-process-utils': 1.0.1
+      '@simple-libs/stream-utils': 1.1.0
       argue-cli: 2.1.0
       dotenv: 16.6.1
-      p-limit: 5.0.0
+      p-limit: 6.2.0
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
@@ -2351,6 +2376,10 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
+
+  '@types/node@22.16.1':
+    dependencies:
+      undici-types: 6.21.0
 
   '@types/node@24.0.10':
     dependencies:
@@ -3842,7 +3871,7 @@ snapshots:
     dependencies:
       yocto-queue: 1.2.1
 
-  p-limit@5.0.0:
+  p-limit@6.2.0:
     dependencies:
       yocto-queue: 1.2.1
 
@@ -4331,6 +4360,8 @@ snapshots:
       has-bigints: 1.1.0
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
+
+  undici-types@6.21.0: {}
 
   undici-types@7.8.0: {}
 
