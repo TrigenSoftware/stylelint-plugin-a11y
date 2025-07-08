@@ -18,11 +18,11 @@ function check(node) {
   }
 
   return node.nodes.some(o => o.type === 'decl'
-      && o.prop.toLowerCase() === 'content'
-      && isContentPropertyUsedCorrectly(o.parent.selectors)
-      && (o.value.toLowerCase() === "''"
-        || o.value.toLowerCase() === '""'
-        || o.value.toLowerCase() === 'attr(aria-label)'))
+    && o.prop.toLowerCase() === 'content'
+    && isContentPropertyUsedCorrectly(o.parent.selectors)
+    && (o.value.toLowerCase() === "''"
+      || o.value.toLowerCase() === '""'
+      || o.value.toLowerCase() === 'attr(aria-label)'))
 }
 
 export default function contentPropertyNoStaticValue(actual) {

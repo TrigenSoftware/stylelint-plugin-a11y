@@ -54,9 +54,9 @@ export default function noSpreadText(actual) {
       const isRejected =
         nodesProbablyForText(rule.nodes)
         && rule.nodes.some(o => o.type === 'decl'
-            && o.prop.toLowerCase() === 'max-width'
-            && o.value.toLowerCase().endsWith('ch')
-            && (parseFloat(o.value) < 45 || parseFloat(o.value) > 80))
+          && o.prop.toLowerCase() === 'max-width'
+          && o.value.toLowerCase().endsWith('ch')
+          && (parseFloat(o.value) < 45 || parseFloat(o.value) > 80))
 
       if (isRejected) {
         report({

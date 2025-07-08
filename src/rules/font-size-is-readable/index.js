@@ -39,8 +39,8 @@ export default function fontSizeIsReadable(actual, options) {
       }
 
       const isRejected = rule.nodes.some(o => o.type === 'decl'
-          && o.prop.toLowerCase() === 'font-size'
-          && (checkInPx(o.value, THRESHOLD_IN_PX) || checkInPt(o.value, THRESHOLD_IN_PX)))
+        && o.prop.toLowerCase() === 'font-size'
+        && (checkInPx(o.value, THRESHOLD_IN_PX) || checkInPt(o.value, THRESHOLD_IN_PX)))
 
       if (isRejected) {
         report({
