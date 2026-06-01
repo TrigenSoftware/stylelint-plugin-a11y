@@ -54,7 +54,7 @@
     "@commitlint/cz-commitlint": "^19.8.1",
     "@trigen/eslint-config": "^8.0.2",
     "@trigen/scripts": "^8.0.0",
-    "clean-publish": "^5.2.2",
+    "clean-publish": "^7.0.0",
     "commitizen": "^4.2.5",
     "del-cli": "^6.0.0",
     "eslint": "^9.30.1",
