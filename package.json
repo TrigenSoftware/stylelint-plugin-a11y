@@ -56,7 +56,7 @@
     "@trigen/scripts": "^8.0.0",
     "clean-publish": "^5.2.2",
     "commitizen": "^4.2.5",
-    "del-cli": "^6.0.0",
+    "del-cli": "^7.0.0",
     "eslint": "^9.30.1",
     "nano-staged": "^0.8.0",
     "simple-git-hooks": "^2.8.1",
