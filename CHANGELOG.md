@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.0](https://github.com/TrigenSoftware/stylelint-plugin-a11y/compare/v1.0.1...v1.1.0) (2026-07-19)
+
+### Features
+
+* add customMedia option to media-prefers-reduced-motion ([#25](https://github.com/TrigenSoftware/stylelint-plugin-a11y/issues/25)) ([3c85268](https://github.com/TrigenSoftware/stylelint-plugin-a11y/commit/3c85268475c7380f608f283e37089bd5f0d4d5b5))
+
 ## [1.0.1](https://github.com/TrigenSoftware/stylelint-plugin-a11y/compare/v1.0.0...v1.0.1) (2025-07-06)
 
 ### Bug Fixes
