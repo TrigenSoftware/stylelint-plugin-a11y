@@ -66,3 +66,76 @@ testRule({
     }
   ]
 })
+
+testRule({
+  plugins,
+  ruleName,
+  config: [
+    true,
+    {
+      customMedia: '--motionReduce'
+    }
+  ],
+  fix: true,
+
+  accept: [
+    {
+      code: '.foo { transition: none } @media (--motionReduce) { .foo { transition: none } }'
+    },
+    {
+      code: '.foo { transition: all; @media (--motionReduce) { transition: none; } }'
+    },
+    {
+      code: '.foo { transition: none } @media screen and (prefers-reduced-motion: reduce) { .foo { transition: none } }'
+    },
+    {
+      code: 'a { animation-name: skew; } @media (--motionReduce) { a { animation: none } }'
+    }
+  ],
+
+  reject: [
+    {
+      code: '.foo { transition: all 5s; color: red; }',
+      fixed: '.foo { transition: all 5s; color: red; }\n@media (--motionReduce) {\n.foo { transition: none;\n}\n}',
+      message: messages.expected('.foo'),
+      line: 1,
+      column: 3
+    },
+    {
+      code: 'a { animation-name: skew; } @media (--anotherMedia) { a { animation: none } }',
+      fixed: 'a { animation-name: skew; }\n@media (--motionReduce) {\na { animation: none;\n}\n} @media (--anotherMedia) { a { animation: none } }',
+      message: messages.expected('a'),
+      line: 1,
+      column: 3
+    }
+  ]
+})
+
+testRule({
+  plugins,
+  ruleName,
+  config: [
+    true,
+    {
+      customMedia: ['--motionReduce', '--reducedMotion']
+    }
+  ],
+
+  accept: [
+    {
+      code: '.foo { transition: none } @media (--reducedMotion) { .foo { transition: none } }'
+    },
+    {
+      code: '.foo { transition: all; @media (--motionReduce) { transition: none; } }'
+    }
+  ],
+
+  reject: [
+    {
+      code: '.foo { animation: 1s ease-in; }',
+      message: messages.expected('.foo'),
+      line: 1,
+      column: 3
+    }
+  ]
+})

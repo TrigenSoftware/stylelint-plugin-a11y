@@ -58,3 +58,34 @@ div {
   }
 }
 ```
+
+## Optional secondary options
+
+### `customMedia: "--custom-media-name" | ["--custom-media-name", ...]`
+
+Name(s) of [custom media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/@custom-media) that should be treated as a `prefers-reduced-motion` media query:
+
+```json
+{
+  "a11y/media-prefers-reduced-motion": [true, { "customMedia": "--motionReduce" }]
+}
+```
+
+```css
+@custom-media --motionReduce screen and (prefers-reduced-motion: reduce);
+```
+
+With this option the following pattern is _not_ considered a violation:
+
+```css
+.foo {
+  transition: all 0.2s ease;
+}
+@media (--motionReduce) {
+  .foo {
+    transition: none;
+  }
+}
+```
+
+The `--fix` option will use the first custom media name for the inserted media query.
