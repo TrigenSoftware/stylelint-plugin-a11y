@@ -30,19 +30,19 @@ testRule({
       code: '.foo { font-size: 10px; }',
       message: messages.expected('.foo'),
       line: 1,
-      column: 3
+      column: 2
     },
     {
       code: '.foo { font-size: 3pt; }',
       message: messages.expected('.foo'),
       line: 1,
-      column: 3
+      column: 2
     },
     {
       code: '.bar { FONT-SIZE: 8PX; }',
       message: messages.expected('.bar'),
       line: 1,
-      column: 3
+      column: 2
     }
   ]
 })
@@ -80,19 +80,19 @@ testRule({
       code: '.foo { font-size: 15px; }',
       message: messages.expected('.foo'),
       line: 1,
-      column: 3
+      column: 2
     },
     {
       code: '.foo { font-size: 3pt; }',
       message: messages.expected('.foo'),
       line: 1,
-      column: 3
+      column: 2
     },
     {
       code: '.bar { FONT-SIZE: 8PX; }',
       message: messages.expected('.bar'),
       line: 1,
-      column: 3
+      column: 2
     }
   ]
 })

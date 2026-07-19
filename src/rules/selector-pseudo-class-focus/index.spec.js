@@ -38,12 +38,12 @@ testRule({
       warnings: [
         {
           message: messages.expected('a:hover'),
-          column: 3,
+          column: 2,
           line: 1
         },
         {
           message: messages.expected('b:hover'),
-          column: 15,
+          column: 14,
           line: 1
         }
       ]
