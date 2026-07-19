@@ -2,6 +2,7 @@ import isCustomSelector from 'stylelint/lib/utils/isCustomSelector.mjs'
 import isStandardSyntaxAtRule from 'stylelint/lib/utils/isStandardSyntaxAtRule.mjs'
 import isStandardSyntaxRule from 'stylelint/lib/utils/isStandardSyntaxRule.mjs'
 import isStandardSyntaxSelector from 'stylelint/lib/utils/isStandardSyntaxSelector.mjs'
+import { isString } from 'stylelint/lib/utils/validateTypes.mjs'
 import { parse } from 'postcss'
 import stylelint from 'stylelint'
 
@@ -19,7 +20,11 @@ const targetProperties = [
   'animation-name'
 ]
 
-function checkChildrenNodes(childrenNodes, currentSelector, parentNode) {
+function checkChildrenNodes(childrenNodes, currentSelector, parentNode, matchesReducedMotion) {
+  if (!matchesReducedMotion(parentNode.params)) {
+    return false
+  }
+
   return childrenNodes.some((declaration) => {
     const index = targetProperties.indexOf(declaration.prop)
 
@@ -35,11 +40,11 @@ function checkChildrenNodes(childrenNodes, currentSelector, parentNode) {
       return false
     }
 
-    return index >= 0 && parentNode.params.indexOf('prefers-reduced-motion') >= 0
+    return index >= 0
   })
 }
 
-function check(selector, node) {
+function check(selector, node, matchesReducedMotion) {
   const declarations = node.nodes
   const params = node.parent.params
   const parentNodes = node.parent.nodes
@@ -58,7 +63,7 @@ function check(selector, node) {
 
   let currentSelector = null
   const declarationsIsMatched = declarations.some((declaration) => {
-    const noMatchedParams = !params || params.indexOf('prefers-reduced-motion') === -1
+    const noMatchedParams = !params || !matchesReducedMotion(params)
     const index = targetProperties.indexOf(declaration.prop)
 
     currentSelector = targetProperties[index]
@@ -85,7 +90,7 @@ function check(selector, node) {
 
         if (
           childrenNode.type === 'atrule'
-          && childrenNode.params.indexOf('prefers-reduced-motion') >= 0
+          && matchesReducedMotion(childrenNode.params)
         ) {
           return childrenNodes.some((declaration) => {
             const index = targetProperties.indexOf(declaration.prop)
@@ -114,7 +119,7 @@ function check(selector, node) {
           return false
         }
 
-        return checkChildrenNodes(childrenNodes, currentSelector, parentNode)
+        return checkChildrenNodes(childrenNodes, currentSelector, parentNode, matchesReducedMotion)
       })
     })
 
@@ -128,15 +133,28 @@ function check(selector, node) {
   return true
 }
 
-export default function mediaPrefersReducedMotion(actual, _, context) {
+export default function mediaPrefersReducedMotion(actual, secondaryOptions, context) {
   return (root, result) => {
     const validOptions = validateOptions(result, ruleName, {
       actual
+    }, {
+      actual: secondaryOptions,
+      possible: {
+        customMedia: [isString]
+      },
+      optional: true
     })
 
     if (!validOptions || !actual) {
       return
     }
+
+    const customMedia = [secondaryOptions?.customMedia ?? []].flat()
+    const matchesReducedMotion = params => params.includes('prefers-reduced-motion')
+      || customMedia.some(name => params.includes(name))
+    const fixMediaQuery = customMedia.length
+      ? `(${customMedia[0]})`
+      : 'screen and (prefers-reduced-motion: reduce)'
 
     root.walk((node) => {
       let selector = null
@@ -159,10 +177,10 @@ export default function mediaPrefersReducedMotion(actual, _, context) {
         return
       }
 
-      const isAccepted = check(selector, node)
+      const isAccepted = check(selector, node, matchesReducedMotion)
 
       if (context.fix && !isAccepted) {
-        const media = parse('\n@media screen and (prefers-reduced-motion: reduce) {}')
+        const media = parse(`\n@media ${fixMediaQuery} {}`)
 
         media.nodes.forEach((o) => {
           o.raws.after = '\n'
