@@ -39,7 +39,7 @@ testRule({
         'a { animation-name: skew; }\n@media screen and (prefers-reduced-motion: reduce) {\na { animation: none;\n}\n}',
       message: messages.expected('a'),
       line: 1,
-      column: 3
+      column: 2
     },
     {
       code: 'a { animation-name: skew; } @media screen and (prefers-reduced-motion) { a { transition: none; } }',
@@ -47,7 +47,7 @@ testRule({
         'a { animation-name: skew; }\n@media screen and (prefers-reduced-motion: reduce) {\na { animation: none;\n}\n} @media screen and (prefers-reduced-motion) { a { transition: none; } }',
       message: messages.expected('a'),
       line: 1,
-      column: 3
+      column: 2
     },
     {
       code: '.foo { animation: 1s ease-in; } @media screen and (prefers-reduced-motion) { .foo { animation: 1s ease-in; } }',
@@ -55,14 +55,14 @@ testRule({
         '.foo { animation: 1s ease-in; }\n@media screen and (prefers-reduced-motion: reduce) {\n.foo { animation: none;\n}\n} @media screen and (prefers-reduced-motion) { .foo { animation: 1s ease-in; } }',
       message: messages.expected('.foo'),
       line: 1,
-      column: 3
+      column: 2
     },
     {
       code: '.foo { transition: all 5s; color: red; }',
       fixed: '.foo { transition: all 5s; color: red; }\n@media screen and (prefers-reduced-motion: reduce) {\n.foo { transition: none;\n}\n}',
       message: messages.expected('.foo'),
       line: 1,
-      column: 3
+      column: 2
     }
   ]
 })
@@ -99,14 +99,14 @@ testRule({
       fixed: '.foo { transition: all 5s; color: red; }\n@media (--motionReduce) {\n.foo { transition: none;\n}\n}',
       message: messages.expected('.foo'),
       line: 1,
-      column: 3
+      column: 2
     },
     {
       code: 'a { animation-name: skew; } @media (--anotherMedia) { a { animation: none } }',
       fixed: 'a { animation-name: skew; }\n@media (--motionReduce) {\na { animation: none;\n}\n} @media (--anotherMedia) { a { animation: none } }',
       message: messages.expected('a'),
       line: 1,
-      column: 3
+      column: 2
     }
   ]
 })
@@ -135,7 +135,7 @@ testRule({
       code: '.foo { animation: 1s ease-in; }',
       message: messages.expected('.foo'),
       line: 1,
-      column: 3
+      column: 2
     }
   ]
 })
