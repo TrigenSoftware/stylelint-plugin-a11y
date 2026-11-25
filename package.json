@@ -60,7 +60,7 @@
     "eslint": "^9.30.1",
     "nano-staged": "^1.0.0",
     "simple-git-hooks": "^2.8.1",
-    "stylelint": "^17.14.0",
+    "stylelint": "^18.0.0",
     "stylelint-test-rule-node": "^0.4.0"
   }
 }
